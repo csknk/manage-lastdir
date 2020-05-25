@@ -9,6 +9,8 @@ You're working late, on a project that is nested 5 or 6 directories deep and you
 * Jot down the path on a piece of paper before shutting down or...
 * Run `lastdir` when you finish work and `lastdir -o` to restart where you left off.
 
+Usage
+-----
 Options:
 * No options: save the output of $PWD to the log
 * `-o`: Open the last location saved in the log
@@ -23,3 +25,19 @@ To do this, save the current file in your `$PATH` and create an alias such as:
 # ~/.bashrc or similar
 alias lastdir=". lastdir"
 ```
+Notes
+-----
+The "open" option (`-o`) uses:
+
+```bash
+cd $(tail -1 ${LASTDIR_LOG} | head -1)
+```
+It would be simpler to use something like:
+
+```bash
+cd $(awk 'END{print}' ${LASTDIR_LOG})
+
+# or
+cd $(sed -n '$p' ${LASTDIR_LOG})
+```
+It might be nice to be able to select a path based on an index from the last line in the log file.
