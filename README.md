@@ -41,3 +41,6 @@ cd $(awk 'END{print}' ${LASTDIR_LOG})
 cd $(sed -n '$p' ${LASTDIR_LOG})
 ```
 It might be nice to be able to select a path based on an index from the last line in the log file.
+
+### Make OPTIND local
+Note that because the script is sourced rather than run, you need to make sure `${OPTIND}` is local to the function - otherwise, there will be unexpected behaviour when invoking multiple times.   
