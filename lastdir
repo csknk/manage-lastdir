@@ -41,6 +41,7 @@ function run_lastdir {
 
 	if [[ "${received_options}" == "false" ]]; then
 		echo "lastdir saving $PWD to ${LASTDIR_LOG}..."
+		touch ${LASTDIR_LOG}
 		[[ $PWD != $(awk 'END{print}' ${LASTDIR_LOG}) ]] && echo $PWD >> ${LASTDIR_LOG}
 	fi
 }
