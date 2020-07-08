@@ -15,7 +15,9 @@
 # `alias lastdir=". lastdir"`.
 # ===========================================================================================================
 function run_lastdir {
-	local LASTDIR_LOG=$HOME/logs/lastdir
+	local LOG_DIR=$HOME/logs
+	local LASTDIR_LOG=${LOG_DIR}/lastdir
+	mkdir -p ${LOG_DIR}
 	local OPTIND opt o p d
 	received_options=false
 	while getopts ":opd" opt; do
