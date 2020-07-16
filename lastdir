@@ -25,9 +25,9 @@ function run_lastdir {
 		case "${opt}" in
 			o)
 				# Check next positional parameter
-				eval nextopt=\${$OPTIND}
+				nextopt=${!OPTIND}
 				index=-1
-				if [[ -n $nextopt && $nextopt != -* ]] ; then
+				if [[ -n $nextopt && $nextopt != -* ]]; then
 					OPTIND=$((OPTIND + 1))
 					index=$((-1 - $nextopt))
 				fi
