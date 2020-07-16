@@ -4,7 +4,7 @@
 #
 # Options:
 # * No options: save the output of $PWD to the log
-# * -o: Open the last location saved in the log
+# * -o: Open the last location saved in the log - if index number supplied, cd into the relevant dir.
 # * -p: Print the log
 # * -d: Delete all log entries except for the last line
 #
@@ -24,11 +24,22 @@ function run_lastdir {
 		received_options=true
 		case "${opt}" in
 			o)
-				cd $(tail -1 ${LASTDIR_LOG} | head -1)
+				# Check next positional parameter
+				eval nextopt=\${$OPTIND}
+				index=-1
+				if [[ -n $nextopt && $nextopt != -* ]] ; then
+					OPTIND=$((OPTIND + 1))
+					index=$((-1 - $nextopt))
+				fi
+				cd $(tail ${index} ${LASTDIR_LOG} | head -1)
 				;;
 			p)
 				echo "printing ${LASTDIR_LOG}..."
-				echo "$(cat ${LASTDIR_LOG})"
+				line_number=$(wc -l < ${LASTDIR_LOG})
+				for line in $(cat ${LASTDIR_LOG}); do
+					(( line_number = line_number - 1 ))
+					echo -e "${line_number}:\t${line}"
+				done
 				;;
 			d)
 				sed -i '$!d' ${LASTDIR_LOG}
